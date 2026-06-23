@@ -1,5 +1,3 @@
-# Florida Fertilizer Certification Trainer v2.1b
+# Florida Fertilizer Certification Trainer v2.1c
 
-Adds reset/navigation controls for Practice, Study Modules, Missed Questions, Exam, Scenarios, and Diagnostic Tree.
-
-Replace index.html, styles.css, data.js, app.js, and README.md in GitHub.
+Adds bottom action bars and Back to Top controls for long sections. Replace index.html, styles.css, data.js, app.js, README.md in GitHub.
