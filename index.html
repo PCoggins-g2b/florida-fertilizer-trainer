@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Florida Fertilizer Certification Trainer v2</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Green Industry Academy™</p>
+      <h1>Florida Fertilizer Certification Trainer</h1>
+      <p class="subtitle">Study modules, practice questions, exam simulator, and field scenarios.</p>
+    </div>
+    <div class="score-card">
+      <span id="overallProgress">0%</span>
+      <small>Course Progress</small>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Main navigation">
+    <button class="tab active" data-view="study">Study</button>
+    <button class="tab" data-view="practice">Practice</button>
+    <button class="tab" data-view="exam">Exam Simulator</button>
+    <button class="tab" data-view="scenarios">Scenarios</button>
+    <button class="tab" data-view="dashboard">Dashboard</button>
+  </nav>
+
+  <main>
+    <section id="study" class="view active">
+      <div class="panel-grid">
+        <aside class="module-list" id="moduleList"></aside>
+        <article class="content-card">
+          <div class="content-top">
+            <button id="prevModule">← Previous</button>
+            <button id="markComplete">Mark Complete</button>
+            <button id="nextModule">Next →</button>
+          </div>
+          <div id="moduleContent"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="practice" class="view">
+      <div class="content-card">
+        <h2>Practice Mode</h2>
+        <p>Practice questions with immediate feedback and explanations.</p>
+        <div class="toolbar">
+          <select id="practiceModule"></select>
+          <button id="newPractice">New Question</button>
+        </div>
+        <div id="practiceQuestion" class="question-box"></div>
+      </div>
+    </section>
+
+    <section id="exam" class="view">
+      <div class="content-card">
+        <h2>Exam Simulator</h2>
+        <p>20 randomized questions. Target score: <strong>85%+</strong>.</p>
+        <div class="toolbar">
+          <button id="startExam">Start New Exam</button>
+          <button id="gradeExam" disabled>Grade Exam</button>
+        </div>
+        <div id="examBox"></div>
+      </div>
+    </section>
+
+    <section id="scenarios" class="view">
+      <div class="content-card">
+        <h2>Field Scenario Trainer</h2>
+        <p>This is the beginning of the diagnostic-thinking engine.</p>
+        <div class="toolbar">
+          <button id="newScenario">New Scenario</button>
+        </div>
+        <div id="scenarioBox" class="question-box"></div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="view">
+      <div class="content-card">
+        <h2>Dashboard</h2>
+        <div id="dashboardBox"></div>
+        <button id="resetProgress" class="danger">Reset Progress</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Independent study tool.</strong> Always verify current Florida rules, FDACS requirements, IFAS BMP materials, and local ordinances before relying on this for licensing or field work.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
