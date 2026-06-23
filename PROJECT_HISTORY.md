@@ -79,3 +79,27 @@ Goal: future courses become content packages instead of separate software builds
 3. Preserve core logic unless intentionally refactoring.
 4. Update PROJECT_HISTORY.md with every meaningful change.
 5. Deploy only after local/static sanity check.
+
+
+---
+
+## v2.2a — Repository Engine Preparation
+
+Date: June 23, 2026
+
+### Purpose
+Convert the stable v2.1e build from a single course-data file into a modular repository-style content structure.
+
+### Changes
+- Preserved v2.1e clean bottom-button UI.
+- Split content into `/data` folder.
+- Created `courses.js`, `modules.js`, `questions.js`, `scenarios.js`, and `diagnostics.js`.
+- Updated `index.html` to load modular data files before `app.js`.
+- Kept existing learning engine, Readiness Score™, Missed Question Vault™, Weak Area Analyzer™, Practice Session Engine, Exam Simulator, Scenario Trainer, and Dashboard.
+- Added diagnostic-tree placeholder as a bridge to the future branching diagnostic engine.
+
+### Strategic Importance
+This is the first step toward turning the Fertilizer Trainer from a standalone course into a reusable Green Industry Academy platform engine. Future courses can now be added by expanding the data repository rather than rewriting the app.
+
+### Next Candidate Version
+`v2.2b` — Course selector shell and multi-course registry preparation.

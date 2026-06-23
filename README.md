@@ -1,24 +1,42 @@
-# Florida Fertilizer Certification Trainer v2.1e
+# Florida Fertilizer Certification Trainer v2.2a
 
 ## Main Upgrade
-Stabilization release based on the last working v2.1c build. Cleans redundant bottom action bars without changing the working training engine.
+Repository-engine preparation. This version preserves the stable v2.1e UI and functionality while moving course content into separate `/data` files.
 
-## Fixes
-- Removes duplicate static bottom controls that repeated Exam actions.
-- Simplifies Study, Practice setup, Missed Questions, and Scenario bottom bars to Back to Top only.
-- Preserves useful dynamic bottom controls generated during active practice sessions, exam sessions, missed-question review, and exam results.
-- Keeps Readiness Score, Missed Question Vault, Weak Area Analyzer, topic filters, session practice engine, dashboard, reset controls, and localStorage progress tracking intact.
+## What Changed
+- Replaced single `data.js` structure with modular data files.
+- Added `/data/courses.js`.
+- Added `/data/modules.js`.
+- Added `/data/questions.js`.
+- Added `/data/scenarios.js`.
+- Added `/data/diagnostics.js` prototype.
+- Updated `index.html` script loading order.
+- Updated local storage namespace to `giaV22a`.
+- Preserved v2.1e clean bottom controls.
+- Continued project history tracking.
 
 ## Upload to GitHub
-Replace these files in the repository root:
-- index.html
-- styles.css
-- data.js
-- app.js
-- README.md
-- PROJECT_HISTORY.md
+Replace or upload:
+- `index.html`
+- `styles.css`
+- `app.js`
+- `README.md`
+- `PROJECT_HISTORY.md`
+- `REPOSITORY_BLUEPRINT_v1.md`
+- `NETLIFY_DEPLOY_NOTES.md`
 
-## Version Lineage
-- v2.1c: Last known stable release with bottom action bars.
-- v2.1d: Attempted cleanup of redundant bottom controls; caused freeze/instability.
-- v2.1e: Recovery/stabilization release using v2.1c as the base with targeted UI cleanup only.
+Add the new folder:
+- `/data/`
+
+Containing:
+- `courses.js`
+- `modules.js`
+- `questions.js`
+- `scenarios.js`
+- `diagnostics.js`
+
+## Netlify
+No build command. Publish directory remains `/`.
+
+## Important
+This is still a static prototype. Before public launch, verify current Florida rules and add terms, privacy notice, and compliance disclaimers.
