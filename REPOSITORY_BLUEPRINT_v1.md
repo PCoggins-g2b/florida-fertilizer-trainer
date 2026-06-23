@@ -1,7 +1,6 @@
 # Green Industry Academy Repository Blueprint v1.0
 
-Core objects:
-Course → Module → Lesson → Question → Scenario → Diagnostic Tree → Progress
+Core objects: Course → Module → Lesson → Question → Scenario → Diagnostic Tree → Progress
 
 Current v2.1 implementation:
 - MODULES
