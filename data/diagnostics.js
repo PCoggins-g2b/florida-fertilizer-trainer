@@ -104,3 +104,65 @@ const DIAGNOSTICS = [
     }
   }
 ];
+
+
+// ---------- Diagnostic Tree Builder Standard v2.2d ----------
+// Required tree fields:
+// id, courseId, title, category, difficulty, status, objective, startNode, nodes
+//
+// Required node types:
+// 1. Decision node:
+//    prompt, observation, choices
+//    choices require: label, next
+//
+// 2. Outcome node:
+//    outcome: true, title, explanation, memoryAid
+//
+// Validation rules:
+// - startNode must exist in nodes.
+// - Every choice.next must point to an existing node.
+// - Every decision node must have at least one choice.
+// - Every active tree should have at least one outcome node.
+// - Each tree ID should be unique.
+//
+// Example template:
+const DIAGNOSTIC_TREE_TEMPLATE_V22D = {
+  id: "COURSE-DT-###",
+  courseId: "COURSE",
+  title: "Diagnostic Tree Title",
+  category: "Category",
+  difficulty: "Beginner | Intermediate | Advanced",
+  status: "draft | active | retired",
+  objective: "What the learner should diagnose or decide.",
+  startNode: "start",
+  nodes: {
+    start: {
+      prompt: "Situation or first decision point.",
+      observation: "Background information shown to the learner.",
+      choices: [
+        { label: "Choice A", next: "nodeA" },
+        { label: "Choice B", next: "nodeB" }
+      ]
+    },
+    nodeA: {
+      prompt: "Follow-up decision point.",
+      observation: "New information after choice A.",
+      choices: [
+        { label: "Proceed to outcome", next: "outcomeGood" }
+      ]
+    },
+    nodeB: {
+      prompt: "Coaching or correction node.",
+      observation: "Explanation of why this branch needs review.",
+      choices: [
+        { label: "Return to start", next: "start" }
+      ]
+    },
+    outcomeGood: {
+      outcome: true,
+      title: "Likely Diagnosis or Correct Decision",
+      explanation: "Why this outcome is correct.",
+      memoryAid: "Short memory aid."
+    }
+  }
+};
