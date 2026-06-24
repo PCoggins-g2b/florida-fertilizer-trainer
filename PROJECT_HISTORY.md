@@ -103,3 +103,33 @@ This is the first step toward turning the Fertilizer Trainer from a standalone c
 
 ### Next Candidate Version
 `v2.2b` — Course selector shell and multi-course registry preparation.
+
+
+---
+
+## Version 2.2b – Course Loader Framework
+Date: June 24, 2026
+Status: Development Release
+
+Objectives:
+- Add a visible course library shell without disrupting the working Fertilizer course.
+- Keep Florida Fertilizer as the only active course.
+- Show future course cards for Ornamental & Turf, Irrigation Technician, Backflow Prevention, and HVAC Service Fundamentals.
+- Confirm the platform is moving from single-course trainer to multi-course framework.
+- Preserve v2.2a repository split and stable UI.
+
+Changes:
+- Updated header to Green Industry Academy™ with selected course line.
+- Added Course Library section above study tabs.
+- Expanded data/courses.js to include active and planned courses.
+- Added status labels: Active and Coming Soon.
+- Added future language placeholders for Spanish, Portuguese, and French.
+
+Result:
+- Fertilizer remains the active course.
+- Future course architecture is now visible in the user interface.
+- Platform is ready for the next step: language framework and/or course-specific data loading.
+
+Next:
+- v2.2c or v2.3: Language Framework / Dual Language Mode planning.
+- v2.3+: Ornamental & Turf content shell.
