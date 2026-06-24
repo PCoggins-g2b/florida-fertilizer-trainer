@@ -23,3 +23,88 @@ function missedList(){let arr=Object.values(progress.missed);if(!arr.length){mis
 startExam.onclick=()=>{examQs=[...QUESTIONS].sort(()=>Math.random()-.5).slice(0,Math.min(20,QUESTIONS.length));gradeExam.disabled=false;examBox.innerHTML=examQs.map((q,i)=>qhtml(q,"e"+i)).join("")+`<div class="bottomBar"><button onclick="gradeExam.click()">Grade Exam</button><button onclick="scrollTopNow()">Back to Top</button><button onclick="cancelExam.click()">Cancel Exam</button></div>`};cancelExam.onclick=()=>{examQs=[];gradeExam.disabled=true;examBox.innerHTML="<p>Exam cancelled. Start a new exam when ready.</p>"};gradeExam.onclick=()=>{if(!examQs.length)return;let c=0,rev="";examQs.forEach((q,i)=>{let ch=document.querySelector(`input[name="e${i}"]:checked`),ok=ch&&Number(ch.value)===q.answer;if(ok)c++;else miss(q);cat(q.category,ok);rev+=`<div class="feedback ${ok?"":"bad"}"><strong>${q.id}:</strong> ${ok?"Correct":"Review"} — ${q.explain}</div>`});let sc=Math.round(c/examQs.length*100);progress.exams.push(sc);save();gradeExam.disabled=true;examBox.innerHTML=`<h3>Exam Score: ${sc}%</h3><p>${sc>=85?"Target met.":"Keep studying. Target is 85%+."}</p>`+rev+`<div class="bottomBar"><button onclick="scrollTopNow()">Back to Top</button><button onclick="startExam.click()">Start New Exam</button></div>`}
 newScenario.onclick=scenario;resetScenario.onclick=()=>{scenarioBox.innerHTML="<p>Scenario reset. Click New Scenario when ready.</p>"};function scenario(){currentScenario=SCENARIOS[Math.floor(Math.random()*SCENARIOS.length)];scenarioBox.innerHTML=`<div class="qcard"><p class="eyebrow">${currentScenario.id} · ${currentScenario.category}</p><h3>${currentScenario.title}</h3><p>${currentScenario.prompt}</p>${currentScenario.choices.map((c,i)=>`<label class="option"><input type="radio" name="sans" value="${i}"> ${String.fromCharCode(65+i)}. ${c}</label>`).join("")}</div><button id="checkS">Check Decision</button><div id="sfb"></div>`;checkS.onclick=()=>{let ch=document.querySelector('input[name="sans"]:checked');if(!ch){sfb.innerHTML='<div class="feedback bad">Choose an answer first.</div>';return}let ok=Number(ch.value)===currentScenario.answer;progress.scenarios.a++;if(ok)progress.scenarios.c++;cat(currentScenario.category,ok);save();sfb.innerHTML=`<div class="feedback ${ok?"":"bad"}"><strong>${ok?"Good decision":"Review this decision"}.</strong> ${currentScenario.explain}</div>`}}
 function dashboard(){let r=readiness(),mp=Math.round(progress.completed.length/MODULES.length*100),pp=pct(progress.practice.c,progress.practice.a),sp=pct(progress.scenarios.c,progress.scenarios.a),be=progress.exams.length?Math.max(...progress.exams):0,active=Object.values(progress.missed).filter(m=>!m.corrected).length;let rows=Object.entries(progress.cats).map(([k,v])=>`<tr><td>${k}</td><td>${v.c}/${v.a}</td><td>${pct(v.c,v.a)}%</td></tr>`).join("");let weak=Object.entries(progress.cats).filter(([k,v])=>v.a>=2&&pct(v.c,v.a)<85).map(([k])=>k).join(", ")||"No weak area identified yet.";dashBox.innerHTML=`<div class="grid"><div class="metric"><strong>${r}%</strong>Readiness Score™<br>${label(r)}</div><div class="metric"><strong>${mp}%</strong>Module Completion</div><div class="metric"><strong>${pp}%</strong>Practice Accuracy</div><div class="metric"><strong>${sp}%</strong>Scenario Accuracy</div><div class="metric"><strong>${be}%</strong>Best Exam</div><div class="metric"><strong>${active}</strong>Active Misses</div><div class="metric"><strong>${progress.sessions}</strong>Practice Sessions</div></div><h3>Weak Area Analyzer™</h3>${rows?`<table><tr><th>Category</th><th>Correct</th><th>Accuracy</th></tr>${rows}</table>`:"<p>No category data yet.</p>"}<h3>Recommended Study Focus</h3><p>${weak}</p>`} reset.onclick=()=>{if(confirm("Reset all local progress?")){localStorage.removeItem("giaV22a");location.reload()}};renderCourseCards();renderModules();renderModule();scenario();ready();
+
+// ---------- Diagnostic Tree Trainer v2.2c ----------
+let currentDiagnostic = null;
+let currentDiagnosticNode = null;
+let diagnosticPath = [];
+
+function setupDiagnostics(){
+  const sel = document.getElementById("diagnosticSelect");
+  const start = document.getElementById("startDiagnostic");
+  const reset = document.getElementById("resetDiagnostic");
+  if(!sel || !start || !reset || typeof DIAGNOSTICS === "undefined") return;
+
+  sel.innerHTML = DIAGNOSTICS
+    .filter(t => t.status === "active")
+    .map(t => `<option value="${t.id}">${t.title}</option>`)
+    .join("");
+
+  start.onclick = () => {
+    const id = sel.value;
+    currentDiagnostic = DIAGNOSTICS.find(t => t.id === id);
+    currentDiagnosticNode = currentDiagnostic.startNode;
+    diagnosticPath = [];
+    renderDiagnosticNode();
+  };
+
+  reset.onclick = () => {
+    currentDiagnostic = null;
+    currentDiagnosticNode = null;
+    diagnosticPath = [];
+    document.getElementById("diagnosticBox").innerHTML = "<p class='note'>Diagnostic reset. Choose a tree and click Start Diagnostic.</p>";
+  };
+
+  document.getElementById("diagnosticBox").innerHTML = "<p class='note'>Choose a diagnostic tree and click Start Diagnostic.</p>";
+}
+
+function renderDiagnosticNode(){
+  const box = document.getElementById("diagnosticBox");
+  if(!box || !currentDiagnostic) return;
+
+  const node = currentDiagnostic.nodes[currentDiagnosticNode];
+  if(!node){
+    box.innerHTML = "<div class='feedback bad'>Diagnostic node missing. Check diagnostics.js.</div>";
+    return;
+  }
+
+  const pathText = diagnosticPath.length
+    ? `<div class="diag-path"><strong>Path:</strong> ${diagnosticPath.join(" → ")}</div>`
+    : "";
+
+  if(node.outcome){
+    box.innerHTML = `
+      <div class="diag-complete">
+        <p class="eyebrow">Diagnostic Outcome</p>
+        <h3>${node.title}</h3>
+        <p>${node.explanation}</p>
+        <div class="memory"><strong>Memory Aid:</strong> ${node.memoryAid || ""}</div>
+      </div>
+      ${pathText}
+    `;
+    return;
+  }
+
+  box.innerHTML = `
+    <div class="diag-step">
+      <p class="eyebrow">${currentDiagnostic.category}</p>
+      <h3>${currentDiagnostic.title}</h3>
+      <p><strong>Objective:</strong> ${currentDiagnostic.objective}</p>
+      <p><strong>Situation:</strong> ${node.prompt}</p>
+      <p>${node.observation || ""}</p>
+    </div>
+    ${pathText}
+    <h3>Choose the next best step:</h3>
+    ${node.choices.map((c, i) => `<button class="diag-choice" data-next="${c.next}" data-label="${c.label.replace(/"/g,'&quot;')}">${String.fromCharCode(65+i)}. ${c.label}</button>`).join("")}
+  `;
+
+  box.querySelectorAll(".diag-choice").forEach(btn => {
+    btn.onclick = () => {
+      diagnosticPath.push(btn.dataset.label);
+      currentDiagnosticNode = btn.dataset.next;
+      renderDiagnosticNode();
+    };
+  });
+}
+
+try { setupDiagnostics(); } catch(e) { console.warn('Diagnostics setup skipped', e); }
