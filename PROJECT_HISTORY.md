@@ -160,3 +160,29 @@ Ready for GitHub/Netlify testing.
 
 Next:
 - v2.2d or v2.3: refine diagnostic UI and begin adding more diagnostic trees.
+
+
+## v2.2d – Diagnostic Tree Builder Framework
+
+Date: June 24, 2026
+
+Objectives:
+- Add builder infrastructure for creating and validating diagnostic trees.
+- Preserve stable v2.2c diagnostic functionality.
+- Make future troubleshooting content easier to create for Fertilizer, O&T, Irrigation, Backflow, HVAC, Arborist, and Service Technician tracks.
+
+Completed:
+- Added Builder tab.
+- Added Diagnostic Builder Console.
+- Added diagnostic-tree validation logic.
+- Added diagnostic-tree template viewer.
+- Added builder rules viewer.
+- Added DIAGNOSTIC_TREE_BUILDER_GUIDE.md.
+- Added validation rules for missing nodes, missing choices, broken branches, duplicate IDs, and missing outcomes.
+
+Status:
+Ready for GitHub/Netlify testing.
+
+Next:
+- v2.3: Language Framework and Dual Language Mode planning.
+- Future: visual diagnostic tree editor.

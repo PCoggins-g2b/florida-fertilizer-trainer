@@ -108,3 +108,135 @@ function renderDiagnosticNode(){
 }
 
 try { setupDiagnostics(); } catch(e) { console.warn('Diagnostics setup skipped', e); }
+
+
+// ---------- Diagnostic Builder Console v2.2d ----------
+function setupBuilderConsole(){
+  const validateBtn = document.getElementById("validateDiagnostics");
+  const templateBtn = document.getElementById("showTreeTemplate");
+  const rulesBtn = document.getElementById("showBuilderRules");
+  const box = document.getElementById("builderBox");
+  if(!validateBtn || !templateBtn || !rulesBtn || !box) return;
+
+  validateBtn.onclick = () => renderDiagnosticValidation();
+  templateBtn.onclick = () => renderDiagnosticTemplate();
+  rulesBtn.onclick = () => renderBuilderRules();
+
+  box.innerHTML = "<p class='note'>Use this console to validate diagnostic-tree structure and review content-builder standards.</p>";
+}
+
+function validateDiagnosticTrees(){
+  const results = [];
+  if(typeof DIAGNOSTICS === "undefined"){
+    return [{ ok:false, tree:"System", message:"DIAGNOSTICS repository is not loaded." }];
+  }
+
+  const ids = new Set();
+  DIAGNOSTICS.forEach(tree => {
+    const treeName = tree.title || tree.id || "Unnamed tree";
+    if(!tree.id) results.push({ ok:false, tree:treeName, message:"Missing tree id." });
+    if(ids.has(tree.id)) results.push({ ok:false, tree:treeName, message:"Duplicate tree id: " + tree.id });
+    ids.add(tree.id);
+
+    ["courseId","title","category","difficulty","status","objective","startNode","nodes"].forEach(field => {
+      if(!tree[field]) results.push({ ok:false, tree:treeName, message:"Missing required field: " + field });
+    });
+
+    if(!tree.nodes) return;
+    if(!tree.nodes[tree.startNode]) results.push({ ok:false, tree:treeName, message:"startNode does not exist in nodes: " + tree.startNode });
+
+    let outcomeCount = 0;
+    Object.keys(tree.nodes).forEach(nodeKey => {
+      const node = tree.nodes[nodeKey];
+
+      if(node.outcome){
+        outcomeCount++;
+        ["title","explanation"].forEach(field => {
+          if(!node[field]) results.push({ ok:false, tree:treeName, message:`Outcome node ${nodeKey} missing ${field}.` });
+        });
+      } else {
+        if(!node.prompt) results.push({ ok:false, tree:treeName, message:`Decision node ${nodeKey} missing prompt.` });
+        if(!Array.isArray(node.choices) || node.choices.length === 0){
+          results.push({ ok:false, tree:treeName, message:`Decision node ${nodeKey} has no choices.` });
+        } else {
+          node.choices.forEach((choice, idx) => {
+            if(!choice.label) results.push({ ok:false, tree:treeName, message:`Choice ${idx+1} in ${nodeKey} missing label.` });
+            if(!choice.next) results.push({ ok:false, tree:treeName, message:`Choice ${idx+1} in ${nodeKey} missing next node.` });
+            if(choice.next && !tree.nodes[choice.next]) results.push({ ok:false, tree:treeName, message:`Choice '${choice.label}' in ${nodeKey} points to missing node: ${choice.next}.` });
+          });
+        }
+      }
+    });
+
+    if(outcomeCount === 0) results.push({ ok:false, tree:treeName, message:"No outcome nodes found." });
+    if(results.filter(r => r.tree === treeName && !r.ok).length === 0){
+      results.push({ ok:true, tree:treeName, message:"Tree passed validation." });
+    }
+  });
+
+  return results;
+}
+
+function renderDiagnosticValidation(){
+  const box = document.getElementById("builderBox");
+  const results = validateDiagnosticTrees();
+  const failures = results.filter(r => !r.ok).length;
+  box.innerHTML = `
+    <h3>Diagnostic Validation Results</h3>
+    <p><strong>${failures === 0 ? "All active diagnostic trees passed validation." : failures + " issue(s) found."}</strong></p>
+    ${results.map(r => `<div class="${r.ok ? "builder-good" : "builder-bad"}"><strong>${r.tree}</strong><br>${r.message}</div>`).join("")}
+  `;
+}
+
+function renderDiagnosticTemplate(){
+  const box = document.getElementById("builderBox");
+  const template = `{
+  id: "COURSE-DT-###",
+  courseId: "COURSE",
+  title: "Diagnostic Tree Title",
+  category: "Category",
+  difficulty: "Beginner | Intermediate | Advanced",
+  status: "draft | active | retired",
+  objective: "What the learner should diagnose or decide.",
+  startNode: "start",
+  nodes: {
+    start: {
+      prompt: "Situation or first decision point.",
+      observation: "Background information shown to the learner.",
+      choices: [
+        { label: "Choice A", next: "nodeA" },
+        { label: "Choice B", next: "nodeB" }
+      ]
+    },
+    nodeA: {
+      prompt: "Follow-up decision point.",
+      observation: "New information after choice A.",
+      choices: [
+        { label: "Proceed to outcome", next: "outcomeGood" }
+      ]
+    },
+    outcomeGood: {
+      outcome: true,
+      title: "Likely Diagnosis or Correct Decision",
+      explanation: "Why this outcome is correct.",
+      memoryAid: "Short memory aid."
+    }
+  }
+}`;
+  box.innerHTML = `<h3>Diagnostic Tree Template</h3><div class="builder-code">${template.replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>`;
+}
+
+function renderBuilderRules(){
+  const box = document.getElementById("builderBox");
+  box.innerHTML = `
+    <h3>Diagnostic Builder Rules</h3>
+    <div class="builder-rule"><strong>1. Start with the real-world situation.</strong><br>Example: Yellow turf, zone will not run, backflow test fails, condenser will not start.</div>
+    <div class="builder-rule"><strong>2. Force observation before treatment.</strong><br>The tree should train the learner to inspect, test, and reason before acting.</div>
+    <div class="builder-rule"><strong>3. Every choice must go somewhere.</strong><br>Each answer points to another node or to an outcome.</div>
+    <div class="builder-rule"><strong>4. Wrong paths should teach.</strong><br>A wrong choice should explain why it is premature, unsafe, or incomplete.</div>
+    <div class="builder-rule"><strong>5. Outcomes must include why.</strong><br>The final answer should include the reasoning and a memory aid.</div>
+    <div class="builder-rule"><strong>6. Trees should support job confidence.</strong><br>The point is not just passing tests; it is learning how professionals think.</div>
+  `;
+}
+
+try { setupBuilderConsole(); } catch(e) { console.warn('Builder console setup skipped', e); }
