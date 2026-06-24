@@ -19,3 +19,8 @@
 - HVAC Service Fundamentals
 - Service Technician Academy
 - Modern Renaissance Project
+
+
+## v2.2c
+
+Diagnostic Tree Framework: add reusable branching troubleshooting engine beginning with fertilizer/turf examples.

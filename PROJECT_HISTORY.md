@@ -133,3 +133,30 @@ Result:
 Next:
 - v2.2c or v2.3: Language Framework / Dual Language Mode planning.
 - v2.3+: Ornamental & Turf content shell.
+
+
+## v2.2c – Diagnostic Tree Framework
+
+Date: June 24, 2026
+
+Objectives:
+- Add the first reusable diagnostic-tree framework.
+- Preserve stable v2.2b course loader behavior.
+- Begin moving from question/answer training into branching troubleshooting.
+- Prepare the engine for fertilizer, Ornamental & Turf, irrigation, backflow, HVAC, and future service technician tracks.
+
+Completed:
+- Added Diagnostics tab.
+- Added data/diagnostics.js as the diagnostic-tree repository.
+- Added two active fertilizer diagnostic trees:
+  - Yellow Turf Diagnostic
+  - Fertilizer Before Storm Diagnostic
+- Added diagnostic node rendering.
+- Added path tracking so users can see their decision route.
+- Added outcome screens with explanation and memory aid.
+
+Status:
+Ready for GitHub/Netlify testing.
+
+Next:
+- v2.2d or v2.3: refine diagnostic UI and begin adding more diagnostic trees.
