@@ -13,3 +13,14 @@
 ## UI Refinement Backlog
 
 - Compact sticky header/topic navigation: current topic headers take more vertical space than desired. Future version should keep navigation visible while the main lesson body scrolls.
+
+
+## Deployment Constraint
+
+- Netlify deploy/credit usage is declining. Batch changes and deploy stable checkpoints instead of every minor experiment.
+
+
+## UI Refinements
+
+- Builder Console buttons should show the currently selected panel, not keep only the left button highlighted.
+- Course/topic headers should eventually be more compact with sticky top navigation.

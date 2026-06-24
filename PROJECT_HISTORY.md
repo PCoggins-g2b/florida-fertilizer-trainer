@@ -186,3 +186,30 @@ Ready for GitHub/Netlify testing.
 Next:
 - v2.3: Language Framework and Dual Language Mode planning.
 - Future: visual diagnostic tree editor.
+
+
+## v2.3 – Language Framework
+
+Date: June 24, 2026
+
+Objectives:
+- Establish English, Spanish, and Dual Language Mode foundation.
+- Preserve stable v2.2d functionality.
+- Begin language-neutral architecture for future courses.
+- Prepare the platform for workforce bilingual training.
+
+Completed:
+- Added Language Mode selector in header.
+- Added Language tab.
+- Added English, Spanish, and Dual Language framework.
+- Added starter technical vocabulary list.
+- Added Dual Language examples.
+- Added LANGUAGE_FRAMEWORK_GUIDE.md.
+- Added future-ready planning for Portuguese and French.
+- Added design principle: technical communication confidence through shared goals.
+
+Status:
+Ready for GitHub/Netlify testing.
+
+Next:
+- v2.3a or v2.4: start language-aware data fields or begin Ornamental & Turf skeleton.

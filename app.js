@@ -240,3 +240,121 @@ function renderBuilderRules(){
 }
 
 try { setupBuilderConsole(); } catch(e) { console.warn('Builder console setup skipped', e); }
+
+
+// ---------- Language Framework v2.3 ----------
+const LANGUAGE_TERMS = [
+  { en:"Runoff", es:"Escorrentía", note:"Water moving across the ground surface." },
+  { en:"Leaching", es:"Lixiviación", note:"Water moving downward through soil carrying nutrients." },
+  { en:"Nitrogen", es:"Nitrógeno", note:"Supports green growth." },
+  { en:"Phosphorus", es:"Fósforo", note:"Supports root development." },
+  { en:"Potassium", es:"Potasio", note:"Supports stress tolerance." },
+  { en:"Best Management Practices", es:"Mejores Prácticas de Manejo", note:"BMPs; responsible methods to protect water and apply correctly." },
+  { en:"Calibration", es:"Calibración", note:"Knowing how much product is actually applied." },
+  { en:"Diagnosis", es:"Diagnóstico", note:"Determine the cause before treatment." }
+];
+
+const UI_TEXT = {
+  en: {
+    modeName:"English",
+    languageNote:"English mode active.",
+    purpose:"This mode presents content in English. It is the current primary content language."
+  },
+  es: {
+    modeName:"Spanish",
+    languageNote:"Spanish framework active; full translations will be added in later content passes.",
+    purpose:"Este modo mostrará el contenido en español. La estructura está lista; las traducciones completas se agregarán después."
+  },
+  dual: {
+    modeName:"Dual Language",
+    languageNote:"Dual Language Mode active: English + Spanish side by side.",
+    purpose:"Dual Language Mode supports shared learning between English and Spanish speakers."
+  }
+};
+
+function setupLanguageFramework(){
+  const selector = document.getElementById("languageMode");
+  if(selector){
+    const saved = localStorage.getItem("giaLanguageMode") || "en";
+    selector.value = saved;
+    selector.onchange = () => setLanguageMode(selector.value);
+    setLanguageMode(saved);
+  }
+
+  const enBtn = document.getElementById("languageEnglish");
+  const esBtn = document.getElementById("languageSpanish");
+  const dualBtn = document.getElementById("languageDual");
+  if(enBtn) enBtn.onclick = () => setLanguageMode("en");
+  if(esBtn) esBtn.onclick = () => setLanguageMode("es");
+  if(dualBtn) dualBtn.onclick = () => setLanguageMode("dual");
+}
+
+function setLanguageMode(mode){
+  localStorage.setItem("giaLanguageMode", mode);
+  const selector = document.getElementById("languageMode");
+  if(selector) selector.value = mode;
+  const note = document.getElementById("languageNote");
+  if(note) note.textContent = UI_TEXT[mode].languageNote;
+
+  ["languageEnglish","languageSpanish","languageDual"].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.remove("primary");
+  });
+  const activeButton = mode === "en" ? "languageEnglish" : mode === "es" ? "languageSpanish" : "languageDual";
+  const btn = document.getElementById(activeButton);
+  if(btn) btn.classList.add("primary");
+
+  renderLanguagePanel(mode);
+}
+
+function renderLanguagePanel(mode){
+  const box = document.getElementById("languageBox");
+  if(!box) return;
+
+  const cards = `
+    <div class="langGrid">
+      <div class="langCard ${mode === "en" ? "activeLang" : ""}">
+        <h3>English</h3>
+        <p>Primary build language. Current content is strongest in English.</p>
+      </div>
+      <div class="langCard ${mode === "es" ? "activeLang" : ""}">
+        <h3>Spanish / Español</h3>
+        <p>Planned as the first major language expansion because of workforce value in landscaping, irrigation, HVAC, backflow, and arboriculture.</p>
+      </div>
+      <div class="langCard ${mode === "dual" ? "activeLang" : ""}">
+        <h3>Dual Language Mode</h3>
+        <p>English and Spanish shown together to build comfort, shared vocabulary, and team communication while pursuing a common training goal.</p>
+      </div>
+    </div>
+  `;
+
+  const dualExamples = `
+    <h3>Dual Language Examples</h3>
+    <div class="dualPair">
+      <div><h4>English</h4><p>What is runoff?</p></div>
+      <div><h4>Español</h4><p>¿Qué es la escorrentía?</p></div>
+    </div>
+    <div class="dualPair">
+      <div><h4>English</h4><p>Runoff is water moving across the ground surface.</p></div>
+      <div><h4>Español</h4><p>La escorrentía es agua que se mueve sobre la superficie del suelo.</p></div>
+    </div>
+  `;
+
+  const terms = `
+    <h3>Starter Technical Vocabulary</h3>
+    <div class="termList">
+      ${LANGUAGE_TERMS.map(t => `<div class="term"><strong>${t.en}</strong><br>${t.es}<br><small>${t.note}</small></div>`).join("")}
+    </div>
+  `;
+
+  box.innerHTML = `
+    <h3>${UI_TEXT[mode].modeName} Mode</h3>
+    <p>${UI_TEXT[mode].purpose}</p>
+    ${cards}
+    ${dualExamples}
+    ${terms}
+    <div class="memory"><strong>Design Principle:</strong> The goal is not perfect fluency. The goal is technical communication confidence through shared work.</div>
+  `;
+}
+
+try { setupLanguageFramework(); } catch(e) { console.warn('Language framework setup skipped', e); }

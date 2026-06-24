@@ -1,4 +1,4 @@
-# Florida Fertilizer Certification Trainer v2.2d
+# Florida Fertilizer Certification Trainer v2.3
 
 ## Main Upgrade
 Repository-engine preparation. This version preserves the stable v2.1e UI and functionality while moving course content into separate `/data` files.
@@ -42,7 +42,7 @@ No build command. Publish directory remains `/`.
 This is still a static prototype. Before public launch, verify current Florida rules and add terms, privacy notice, and compliance disclaimers.
 
 
-## v2.2d Course Loader Framework
+## v2.3 Course Loader Framework
 - Adds a Course Library shell.
 - Keeps Florida Fertilizer as the only active course.
 - Adds Coming Soon cards for Ornamental & Turf, Irrigation, Backflow, and HVAC.
@@ -50,11 +50,16 @@ This is still a static prototype. Before public launch, verify current Florida r
 - Prepares for future language modes: English, Spanish, Portuguese, French.
 
 
-## v2.2d Diagnostic Tree Framework
+## v2.3 Diagnostic Tree Framework
 
 Adds a Diagnostics tab and reusable diagnostic-tree repository in `data/diagnostics.js`.
 
 
-## v2.2d Diagnostic Tree Builder Framework
+## v2.3 Diagnostic Tree Builder Framework
 
 Adds a Builder tab with diagnostic-tree validation, a reusable template, builder rules, and `DIAGNOSTIC_TREE_BUILDER_GUIDE.md`.
+
+
+## v2.3 Language Framework
+
+Adds English, Spanish, and Dual Language Mode foundation plus `LANGUAGE_FRAMEWORK_GUIDE.md`.
